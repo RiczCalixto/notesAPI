@@ -10,11 +10,25 @@ const addNotes = (title, body) => {
     return note.title === title;
   });
 
-  if (duplicateNotes) {
-    console.log("Unfortunatly there is a note with this title already");
-  } else {
+  if (duplicateNotes.length === 0) {
     notes.push({ title: title, body: body });
     saveNotes(notes);
+  } else {
+    console.log("Unfortunatly there is a note with this title already");
+  }
+};
+
+const removeNotes = title => {
+  const notes = loadNotes();
+  const noteToDelete = notes.filter(note => {
+    return note.title !== title;
+  });
+
+  if (noteToDelete.length !== notes.length) {
+    saveNotes(noteToDelete);
+    console.log(`This note was deleted: ${title}`);
+  } else {
+    console.log("There is no such note with that title.");
   }
 };
 
@@ -34,5 +48,6 @@ const loadNotes = () => {
 
 module.exports = {
   getNotes: getNotes,
-  addNotes: addNotes
+  addNotes: addNotes,
+  removeNotes: removeNotes
 };
