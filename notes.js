@@ -1,4 +1,5 @@
 const fs = require("fs");
+const chalk = require("chalk");
 
 const getNotes = () => {
   return "Your notes..";
@@ -12,23 +13,26 @@ const addNotes = (title, body) => {
 
   if (duplicateNotes.length === 0) {
     notes.push({ title: title, body: body });
+    console.log(chalk.green(`This note was added: ${title}`));
     saveNotes(notes);
   } else {
-    console.log("Unfortunatly there is a note with this title already");
+    console.log(
+      chalk.red("Unfortunatly there is a note with this title already")
+    );
   }
 };
 
 const removeNotes = title => {
   const notes = loadNotes();
-  const noteToDelete = notes.filter(note => {
+  const notesToKeep = notes.filter(note => {
     return note.title !== title;
   });
 
-  if (noteToDelete.length !== notes.length) {
-    saveNotes(noteToDelete);
-    console.log(`This note was deleted: ${title}`);
+  if (notesToKeep.length !== notes.length) {
+    saveNotes(notesToKeep);
+    console.log(chalk.red.inverse(`This note was deleted: ${title}`));
   } else {
-    console.log("There is no such note with that title.");
+    console.log(chalk.blue("There is no such note with that title."));
   }
 };
 
